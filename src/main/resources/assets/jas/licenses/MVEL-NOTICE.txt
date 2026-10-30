@@ -1,0 +1,4 @@
+MVEL 2.2.0, bundled as source under org/mvel2, as upstream Just Another Spawner ships it.
+Copyright (C) 2007 MVFLEX/Valhalla Project and the Codehaus (Mike Brock, Dhanji Prasanna, John Graham, Mark Proctor).
+Source: https://github.com/mvel/mvel
+License: Apache License, Version 2.0. See MVEL-Apache-2.0.txt in this directory.
