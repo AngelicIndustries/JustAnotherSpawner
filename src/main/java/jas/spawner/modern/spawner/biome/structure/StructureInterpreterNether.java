@@ -2,6 +2,7 @@ package jas.spawner.modern.spawner.biome.structure;
 
 import jas.api.StructureInterpreter;
 import jas.common.helper.ReflectionHelper;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class StructureInterpreterNether implements StructureInterpreter {
 	public String areCoordsStructure(World world, int xCoord, int yCoord, int zCoord) {
 		MapGenStructure genNetherBridge = null;
 		if (genNetherBridge == null) {
-			BiomeGenBase biome = world.getBiomeGenForCoords(xCoord, zCoord);
+			BiomeGenBase biome = BiomeLookup.biome(world, xCoord, yCoord, zCoord);
 			ChunkProviderServer chunkprovider = (ChunkProviderServer) world.getChunkProvider();
 			ChunkProviderHell chunkProviderHell = chunkprovider.currentChunkProvider instanceof ChunkProviderHell ? (ChunkProviderHell) chunkprovider.currentChunkProvider
 					: null;

@@ -96,6 +96,22 @@ public class BiomeGroupRegistry {
 		return pckgNameToBiomeID;
 	}
 
+	/**
+	 * The biome IDs whose vanilla spawn lists give a biome its default entries. A Biomic island identity has no biome
+	 * ID of its own and uses its biome's.
+	 */
+	public List<Integer> defaultBiomeIDs(String pckgName) {
+		BiomeLookup.Island island = BiomeLookup.islands().get(pckgName);
+		if (island != null) {
+			return island.biome != null ? Collections.singletonList(island.biome.biomeID) : Collections
+					.<Integer> emptyList();
+		}
+		return pckgNameToBiomeID.get(pckgName);
+	}
+
+	/** Prefix of the attributes made from Biomic's tags, i.e. A|biomic:FLOATING_ISLAND. */
+	public static final String BIOMIC_ATTRIBUTE = "biomic:";
+
 	private ImmutableMap<String, BiomeGroup> iDToAttribute;
 
 	/** Mapping Between AttributeID and the Biomes it Represents. */
@@ -252,6 +268,17 @@ public class BiomeGroupRegistry {
 				newMappings.add(defaultMapping);
 			}
 		}
+		// Biomic's island identities are biomes of their own, mapped by key
+		for (String key : BiomeLookup.islands().keySet()) {
+			if (!biomePckgToMappingBuilder.containsKey(key)) {
+				String defaultMapping = key;
+				for (int attempts = 1; biomeMappingToPckgBuilder.containsKey(defaultMapping); attempts++) {
+					defaultMapping = key + "_" + attempts;
+				}
+				biomePckgToMappingBuilder.put(key, defaultMapping);
+				newMappings.add(defaultMapping);
+			}
+		}
 
 		biomeMappingToPckg = ImmutableBiMap.<String, String> builder().putAll(biomeMappingToPckgBuilder).build();
 		biomePckgToMapping = biomeMappingToPckg.inverse();
@@ -278,6 +305,7 @@ public class BiomeGroupRegistry {
 				attributeGroups.add(attributeGroup);
 			}
 		}
+		addBiomicAttributes(attributeGroups);
 		HashMap<String, BiomeGroup> iDToAttributeBuilder = new HashMap<String, BiomeGroup>();
 		List<BiomeGroup> sortedAttributes = getSortedGroups(attributeGroups);
 		ListMultimap<String, String> packgNameToAttribIDsBuilder = ArrayListMultimap.create();
@@ -297,6 +325,39 @@ public class BiomeGroupRegistry {
 		packgNameToAttribIDs = ImmutableListMultimap.<String, String> builder().putAll(packgNameToAttribIDsBuilder)
 				.build();
 		iDToAttribute = ImmutableMap.<String, BiomeGroup> builder().putAll(iDToAttributeBuilder).build();
+	}
+
+	/**
+	 * Biomic's tags as attributes, biomic:<TAG> holding every biome and island identity with that tag. Rebuilt from
+	 * Biomic on every load, so saved copies don't go stale.
+	 */
+	private void addBiomicAttributes(Set<BiomeGroup> attributeGroups) {
+		Map<String, Set<String>> tagsByPackageName = BiomeLookup.tagsByPackageName();
+		if (tagsByPackageName.isEmpty()) {
+			return;
+		}
+		Iterator<BiomeGroup> saved = attributeGroups.iterator();
+		while (saved.hasNext()) {
+			if (saved.next().groupID.startsWith(BIOMIC_ATTRIBUTE)) {
+				saved.remove();
+			}
+		}
+		TreeMap<String, BiomeGroup> byTag = new TreeMap<String, BiomeGroup>();
+		for (Map.Entry<String, Set<String>> entry : tagsByPackageName.entrySet()) {
+			String mapping = biomePckgToMapping.get(entry.getKey());
+			if (mapping == null) {
+				continue;
+			}
+			for (String tag : entry.getValue()) {
+				BiomeGroup attribute = byTag.get(tag);
+				if (attribute == null) {
+					attribute = new BiomeGroup(BIOMIC_ATTRIBUTE + tag);
+					byTag.put(tag, attribute);
+				}
+				attribute.contents.add(mapping);
+			}
+		}
+		attributeGroups.addAll(byTag.values());
 	}
 
 	private void loadBiomeGroups(BiomeGroupSaveObject savedStats, Set<String> newMappings) {

@@ -3,18 +3,17 @@ package jas.spawner.modern.spawner.creature.handler.parsing.keys;
 import jas.common.JASLog;
 import jas.spawner.modern.MVELProfile;
 import jas.spawner.modern.spawner.biome.group.BiomeGroupRegistry;
-import jas.spawner.modern.spawner.biome.group.BiomeHelper;
 import jas.spawner.modern.spawner.creature.handler.parsing.ParsingHelper;
 import jas.spawner.modern.spawner.creature.handler.parsing.TypeValuePair;
 import jas.spawner.modern.spawner.creature.handler.parsing.settings.OptionalSettings;
 import jas.spawner.modern.spawner.creature.handler.parsing.settings.OptionalSettings.Operand;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 
 import com.google.common.collect.ImmutableMultimap;
 
@@ -163,17 +162,17 @@ public class KeyParserBiome extends KeyParserBase {
 
             for (int i = -rangeX; i <= rangeX; i++) {
                 for (int k = -rangeZ; k <= rangeZ; k++) {
-                    BiomeGenBase biome = world.getBiomeGenForCoords(xCoord + offsetX + i, zCoord + offsetZ + k);
+                    String packageName = BiomeLookup.packageName(world, xCoord + offsetX + i, yCoord, zCoord + offsetZ + k);
                     boolean isBiome = false;
                     switch (type) {
                     case ATTRIBUTE: {
-                        if (registry.packgNameToAttribIDs().get(BiomeHelper.getPackageName(biome)).contains(biomeName)) {
+                        if (registry.packgNameToAttribIDs().get(packageName).contains(biomeName)) {
                             isBiome = true;
                         }
                         break;
                     }
                     case GROUP: {
-                        if (packgToBiomeGroupID.get(BiomeHelper.getPackageName(biome)).contains(biomeName)) {
+                        if (packgToBiomeGroupID.get(packageName).contains(biomeName)) {
                             isBiome = true;
                         }
                         break;

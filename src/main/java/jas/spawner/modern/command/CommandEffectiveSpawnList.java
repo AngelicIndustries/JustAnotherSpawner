@@ -14,6 +14,7 @@ import jas.spawner.modern.spawner.creature.handler.LivingHandler;
 import jas.spawner.modern.spawner.creature.handler.LivingHandlerRegistry;
 import jas.spawner.modern.spawner.creature.handler.parsing.ParsingHelper;
 import jas.spawner.modern.spawner.creature.type.CreatureType;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -205,8 +206,8 @@ public class CommandEffectiveSpawnList extends CommandJasBase {
 										- worldServer.rand.nextInt(verVar), startSpawningPoint.chunkPosZ
 										+ worldServer.rand.nextInt(horVar) - worldServer.rand.nextInt(horVar));
 						// Biome BlackList
-						if (blacklist.isBlacklisted(worldServer.getBiomeGenForCoords(spawningPoint.chunkPosX,
-								spawningPoint.chunkPosY))) {
+						if (blacklist.isBlacklisted(BiomeLookup.biome(worldServer, spawningPoint.chunkPosX,
+								spawningPoint.chunkPosY, spawningPoint.chunkPosZ))) {
 							continue;
 						}
 						

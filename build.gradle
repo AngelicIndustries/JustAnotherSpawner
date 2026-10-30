@@ -38,6 +38,9 @@ curse {
 }
 */
 repositories {
+	// Biomic, for its 3D biome API: `VERSION=0.0.1-debloat ./gradlew publishToMavenLocal` in Biomic first
+	mavenLocal()
+	maven { url = "https://maven.wagyourtail.xyz/releases" }
 	//mavenCentral()
 	//maven {
 	//	name = 'jeval'
@@ -51,6 +54,10 @@ repositories {
 }
 
 dependencies {
+	// Optional: only spawner/biome/group/BiomicBiomes calls it, when Biomic is installed
+	compileOnly('industries.angelic.biomic:Biomic:0.0.1-debloat:dev') { transitive = false }
+	// Biomic's Java 8 classes extend JVM Downgrader's record stub; on Java 21+ its real records are used
+	compileOnly('xyz.wagyourtail.jvmdowngrader:jvmdowngrader-java-api:1.3.6:downgraded-8') { transitive = false }
 	//compile 'net.sourceforge.jeval:jeval:0.9.4'
 	//compile 'org.mvel:mvel2:2.2.0.Final'
 	// compile 'com.beust:jcommander:1.30' //JCommander command line arguments

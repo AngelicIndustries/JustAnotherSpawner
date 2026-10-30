@@ -33,12 +33,12 @@ public class FunctionsLegacy implements TagsLegacy {
 	}
 
 	public boolean top() {
-		return parent.wrld().biomeTop(parent.posX(), parent.posZ()) == parent.wrld().blockAt(parent.posX(),
+		return parent.wrld().biomeTop(parent.posX(), parent.posY() - 1, parent.posZ()) == parent.wrld().blockAt(parent.posX(),
 				parent.posY() - 1, parent.posZ());
 	}
 
 	public boolean filler() {
-		return parent.wrld().biomeFiller(parent.posX(), parent.posZ()) == parent.wrld().blockAt(parent.posX(),
+		return parent.wrld().biomeFiller(parent.posX(), parent.posY() - 1, parent.posZ()) == parent.wrld().blockAt(parent.posX(),
 				parent.posY() - 1, parent.posZ());
 	}
 

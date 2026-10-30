@@ -3,6 +3,7 @@ package jas.spawner.modern.spawner.creature.handler.parsing.keys;
 import jas.common.JASLog;
 import jas.spawner.modern.spawner.creature.handler.parsing.TypeValuePair;
 import jas.spawner.modern.spawner.creature.handler.parsing.settings.OptionalSettings.Operand;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +41,7 @@ public class KeyParserTop extends KeyParserBase {
     public boolean isValidLocation(World world, EntityLiving entity, int xCoord, int yCoord, int zCoord,
             TypeValuePair typeValuePair, HashMap<String, Object> valueCache) {
         boolean isInverted = (Boolean) typeValuePair.getValue();
-        boolean isTopBlock = world.getBiomeGenForCoords(xCoord, zCoord).topBlock == world.getBlock(xCoord, yCoord - 1,
+        boolean isTopBlock = BiomeLookup.biome(world, xCoord, yCoord - 1, zCoord).topBlock == world.getBlock(xCoord, yCoord - 1,
                 zCoord);
         return isInverted ? isTopBlock : !isTopBlock;
 	}

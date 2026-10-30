@@ -9,6 +9,7 @@ import jas.spawner.modern.spawner.creature.handler.LivingHandler;
 import jas.spawner.modern.spawner.creature.handler.LivingHandlerRegistry;
 import jas.spawner.modern.spawner.creature.type.CreatureTypeRegistry;
 import jas.spawner.modern.world.WorldProperties;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -76,7 +77,7 @@ public class StructureHandler {
 	}
 
 	public boolean doesHandlerApply(World world, int xCoord, int yCoord, int zCoord) {
-		return interpreter.shouldUseHandler(world, world.getBiomeGenForCoords(xCoord, zCoord));
+		return interpreter.shouldUseHandler(world, BiomeLookup.biome(world, xCoord, yCoord, zCoord));
 	}
 
 	/**

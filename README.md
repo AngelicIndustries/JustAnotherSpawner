@@ -1,3 +1,14 @@
+Adventura Arcana fork
+
+* Spawn lists are chosen by the biome at the spawn position, not the column. With Biomic (API version 2) that is its
+  3D biome, and each sky island identity that shares its biome with the ground (biomic:floating/..., biomic:aeropelago/...,
+  biomic:hosted/...) is a biome of its own: its own mapping and group, with default spawns from the biome it hosts.
+  Biomic's tags are attributes, rebuilt each load: "A|biomic:FLOATING_ISLAND" holds every island. MVEL tags get
+  wrld.biomeAt(x, y, z), wrld.biomicKeyAt(x, y, z) and wrld.biomicTagsAt(x, y, z).
+* Works with EndlessIDs biome IDs; converted max-height tags no longer stop at 256.
+* CosmicDan's spawning events and IS_JAS_SPAWNED tag (off by default, in GlobalProperties).
+* Build with Java 8: JAVA_HOME=/usr/lib/jvm/java-8-openjdk sh gradlew build. Biomic comes from Maven Local.
+
 Just Another Spawner (JAS) is a Minecraft Mod that aimed at providing an alternative entity spawning system for Minecraft.
 
 License / Legal Stuff

@@ -8,6 +8,7 @@ import jas.common.helper.GsonHelper;
 import jas.spawner.modern.DefaultProps;
 import jas.spawner.modern.spawner.biome.group.BiomeGroupRegistry;
 import jas.spawner.modern.spawner.biome.group.BiomeHelper;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 import jas.spawner.modern.spawner.biome.group.BiomeGroupRegistry.BiomeGroup;
 import jas.spawner.modern.spawner.biome.structure.StructureHandlerRegistry;
 import jas.spawner.modern.spawner.creature.entry.BiomeSpawnsSaveObject.BiomeSpawnsSaveObjectSerializer;
@@ -177,7 +178,7 @@ public final class BiomeSpawnListRegistry {
                     : null;
         }
         ImmutableCollection<String> groupIDList = biomeGroupRegistry.packgNameToGroupIDs().get(
-                BiomeHelper.getPackageName(world.getBiomeGenForCoords(xCoord, zCoord)));
+                BiomeLookup.packageName(world, xCoord, yCoord, zCoord));
         return getRandomValidEntry(world.rand, groupIDList, creatureType.typeID);
     }
 
@@ -359,7 +360,7 @@ public final class BiomeSpawnListRegistry {
     private SpawnListEntry findVanillaSpawnListEntry(BiomeGroup group, LivingHandler livingHandler,
             ImportedSpawnList importedSpawnList) {
         for (String pckgNames : group.getBiomeNames()) {
-            for (Integer biomeID : biomeGroupRegistry.pckgNameToBiomeID().get(pckgNames)) {
+            for (Integer biomeID : biomeGroupRegistry.defaultBiomeIDs(pckgNames)) {
                 Collection<net.minecraft.world.biome.BiomeGenBase.SpawnListEntry> spawnListEntries = importedSpawnList
                         .getSpawnableCreatureList(biomeID);
                 for (String jasName : livingHandler.namedJASSpawnables) {

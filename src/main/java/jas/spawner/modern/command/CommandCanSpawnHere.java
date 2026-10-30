@@ -13,6 +13,7 @@ import jas.spawner.modern.spawner.creature.handler.LivingHandler;
 import jas.spawner.modern.spawner.creature.handler.LivingHandlerRegistry;
 import jas.spawner.modern.spawner.creature.handler.LivingHelper;
 import jas.spawner.modern.spawner.creature.type.CreatureType;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -198,8 +199,10 @@ public class CommandCanSpawnHere extends CommandJasBase {
 
     private String getMatchingBiomeSpawnListEntries(String livingGroupID, Entity entity, CreatureType livingType,
             Collection<SpawnListEntry> matchingSpawnListEntries) {
-        BiomeGenBase biome = entity.worldObj.getBiomeGenForCoords((int) entity.posX, (int) entity.posZ);
-        String packageBiome = BiomeHelper.getPackageName(biome);
+        BiomeLookup.Result here = BiomeLookup.at(entity.worldObj, MathHelper.floor_double(entity.posX),
+                MathHelper.floor_double(entity.posY), MathHelper.floor_double(entity.posZ));
+        BiomeGenBase biome = here.biome;
+        String packageBiome = here.packageName;
 
         BiomeSpawnListRegistry biomeSpawnListRegistry = MVELProfile.worldSettings().biomeSpawnListRegistry();
         for (SpawnListEntry spawnListEntry : biomeSpawnListRegistry.getSpawnListFor(livingType.typeID, packageBiome)) {

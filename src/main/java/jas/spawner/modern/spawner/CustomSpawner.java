@@ -7,7 +7,7 @@ import jas.spawner.modern.MVELProfile;
 import jas.spawner.modern.ForgeEvents.StartSpawnCreaturesInChunks;
 import jas.spawner.modern.spawner.CountInfo.ChunkStat;
 import jas.spawner.modern.spawner.Counter.SpawnCounter;
-import jas.spawner.modern.spawner.biome.group.BiomeHelper;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 import jas.spawner.modern.spawner.creature.entry.BiomeSpawnListRegistry;
 import jas.spawner.modern.spawner.creature.entry.SpawnListEntry;
 import jas.spawner.modern.spawner.creature.handler.LivingHandler;
@@ -94,8 +94,8 @@ public class CustomSpawner {
 						startSpawningPoint.chunkPosY + worldServer.rand.nextInt(verVar) - worldServer.rand.nextInt(verVar),
 						startSpawningPoint.chunkPosZ + worldServer.rand.nextInt(horVar) - worldServer.rand.nextInt(horVar));
 					// Biome BlackList
-					if (blacklist.isBlacklisted(worldServer.getBiomeGenForCoords(spawningPoint.chunkPosX,
-							spawningPoint.chunkPosY))) {
+					if (blacklist.isBlacklisted(BiomeLookup.biome(worldServer, spawningPoint.chunkPosX,
+							spawningPoint.chunkPosY, spawningPoint.chunkPosZ))) {
 						break;
 					}
 
@@ -194,8 +194,8 @@ public class CustomSpawner {
 									(int) entityliving.posX,
 									(int) entityliving.posY,
 									(int) entityliving.posZ,
-									BiomeHelper.getPackageName(entityliving.worldObj.getBiomeGenForCoords(
-											(int) entityliving.posX, (int) entityliving.posZ)), nearbyX, nearbyY, nearbyZ, nearbyNames);
+									BiomeLookup.packageName(entityliving.worldObj, (int) entityliving.posX,
+											(int) entityliving.posY, (int) entityliving.posZ), nearbyX, nearbyY, nearbyZ, nearbyNames);
 
 						} else {
 							JASLog.log().logSpawn(
@@ -205,8 +205,8 @@ public class CustomSpawner {
 									(int) entityliving.posX,
 									(int) entityliving.posY,
 									(int) entityliving.posZ,
-									BiomeHelper.getPackageName(entityliving.worldObj.getBiomeGenForCoords(
-											(int) entityliving.posX, (int) entityliving.posZ)));
+									BiomeLookup.packageName(entityliving.worldObj, (int) entityliving.posX,
+											(int) entityliving.posY, (int) entityliving.posZ));
 
 						}
 						
@@ -254,6 +254,8 @@ public class CustomSpawner {
 			BiomeSpawnListRegistry biomeSpawnListRegistry = MVELProfile.worldSettings().biomeSpawnListRegistry();
 			SpawnListEntry spawnListEntry = biomeSpawnListRegistry.getSpawnListEntryToSpawn(world, creatureType, j1,
 					topHeight, k1);
+			// The pack stays in the biome it was chosen for: off a floating island's edge is the ground's biome
+			String identity = BiomeLookup.packageName(world, j1, topHeight, k1);
 			IEntityLivingData entitylivingdata = null;
 			if (spawnListEntry == null) {
 				JASLog.log().debug(Level.INFO, "Entity not Spawned due to Empty %s List", creatureType.typeID);
@@ -276,7 +278,8 @@ public class CustomSpawner {
 				}
 				for (int k2 = 0; !flag && k2 < 4; ++k2) {
 					int l2 = world.getTopSolidOrLiquidBlock(j1, k1);
-					if (creatureType.canSpawnAtLocation(world, new Tags(world, countInfo, j1, l2, k1), j1, l2, k1)) {
+					if (identity.equals(BiomeLookup.packageName(world, j1, l2, k1))
+							&& creatureType.canSpawnAtLocation(world, new Tags(world, countInfo, j1, l2, k1), j1, l2, k1)) {
 						float f = j1 + 0.5F;
 						float f1 = l2;
 						float f2 = k1 + 0.5F;
@@ -298,8 +301,8 @@ public class CustomSpawner {
 									(int) entityliving.posX,
 									(int) entityliving.posY,
 									(int) entityliving.posZ,
-									BiomeHelper.getPackageName(entityliving.worldObj.getBiomeGenForCoords(
-											(int) entityliving.posX, (int) entityliving.posZ)));
+									BiomeLookup.packageName(entityliving.worldObj, (int) entityliving.posX,
+											(int) entityliving.posY, (int) entityliving.posZ));
 							world.spawnEntityInWorld(entityliving);
 							if (!ForgeEventFactory.doSpecialSpawn(entityliving, world, f, f1, f2)) {
 								entitylivingdata = entityliving.onSpawnWithEgg(entitylivingdata);

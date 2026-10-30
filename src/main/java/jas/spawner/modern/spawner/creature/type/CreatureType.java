@@ -31,6 +31,7 @@ import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.ChunkPosition;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.biome.WorldChunkManager;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -184,13 +185,16 @@ public class CreatureType {
 		}
 		int chunkCap = 0;
 		int counter = 0;
-		byte[] biomeArray = chunk.getBiomeArray();
-		for (int i = 0; i < biomeArray.length; i++) {
-			int biomeID = biomeArray[i] & 255;
-			Integer columnCap = biomeCaps.get(biomeID);
-			columnCap = columnCap != null ? columnCap : defaultBiomeCap;
-			chunkCap += columnCap;
-			counter++;
+		// Per column rather than from getBiomeArray(): with EndlessIDs that byte array can't hold the biome IDs
+		WorldChunkManager chunkManager = chunk.worldObj.getWorldChunkManager();
+		for (int x = 0; x < 16; x++) {
+			for (int z = 0; z < 16; z++) {
+				int biomeID = chunk.getBiomeGenForWorldCoords(x, z, chunkManager).biomeID;
+				Integer columnCap = biomeCaps.get(biomeID);
+				columnCap = columnCap != null ? columnCap : defaultBiomeCap;
+				chunkCap += columnCap;
+				counter++;
+			}
 		}
 		return counter > 0 ? chunkCap / counter : -1;
 	}

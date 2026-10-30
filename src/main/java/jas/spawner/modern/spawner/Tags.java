@@ -9,7 +9,7 @@ import jas.spawner.modern.spawner.FunctionsUtility.Conditional;
 import jas.spawner.modern.spawner.TagsEntity.FunctionsEntity;
 import jas.spawner.modern.spawner.TagsNBT.FunctionsNBT;
 import jas.spawner.modern.spawner.biome.group.BiomeGroupRegistry;
-import jas.spawner.modern.spawner.biome.group.BiomeHelper;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 import jas.spawner.modern.spawner.creature.handler.parsing.NBTWriter;
 import jas.spawner.modern.spawner.tags.TagsCount;
 import jas.spawner.modern.spawner.tags.TagsLegacy;
@@ -28,7 +28,6 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import com.google.common.base.Optional;
@@ -257,21 +256,21 @@ public class Tags extends CommonContext {
 				} else if (biomeName.startsWith("G|")) {
 					type = "GROUP";
 				}
-				BiomeGenBase biome = wrld.biomeAt(xCoord, zCoord);
+				String packageName = BiomeLookup.packageName(world, xCoord, yCoord, zCoord);
 				BiomeGroupRegistry registry = MVELProfile.worldSettings().biomeGroupRegistry();
 				if (type.equals("GROUP")) {
 					ImmutableMultimap<String, String> packgToBiomeGroupID = registry.packgNameToGroupIDs();
-					if (packgToBiomeGroupID.get(BiomeHelper.getPackageName(biome)).contains(biomeName.substring(2))) {
+					if (packgToBiomeGroupID.get(packageName).contains(biomeName.substring(2))) {
 						return true;
 					}
 				} else if (type.equals("ATTRIBUTE")) {
 					ImmutableMultimap<String, String> packgToAttributeID = registry.packgNameToAttribIDs();
-					if (packgToAttributeID.get(BiomeHelper.getPackageName(biome)).contains(biomeName.substring(2))) {
+					if (packgToAttributeID.get(packageName).contains(biomeName.substring(2))) {
 						return true;
 					}
 				} else if (type.equals("MAPPING")) {
-					if (registry.biomeMappingToPckg().containsValue(biomeName)
-							|| registry.biomePckgToMapping().containsValue(biomeName)) {
+					if (biomeName.equals(registry.biomePckgToMapping().get(packageName))
+							|| biomeName.equals(packageName)) {
 						return true;
 					}
 				}

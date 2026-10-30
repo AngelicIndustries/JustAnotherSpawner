@@ -6,6 +6,7 @@ import jas.spawner.modern.spawner.biome.structure.StructureHandler;
 import jas.spawner.modern.spawner.creature.entry.BiomeSpawnListRegistry;
 import jas.spawner.modern.spawner.creature.entry.SpawnListEntry;
 import jas.spawner.modern.spawner.creature.type.CreatureType;
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -15,6 +16,7 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.biome.BiomeGenBase;
 
 public class CommandListSpawns extends CommandJasBase {
@@ -94,7 +96,8 @@ public class CommandListSpawns extends CommandJasBase {
                 return target;
             }
         }
-        return BiomeHelper.getPackageName(player.worldObj.getBiomeGenForCoords((int) player.posX, (int) player.posZ));
+        return BiomeLookup.packageName(player.worldObj, MathHelper.floor_double(player.posX),
+                MathHelper.floor_double(player.posY), MathHelper.floor_double(player.posZ));
     }
 
     private boolean isBiomeName(String arg) {

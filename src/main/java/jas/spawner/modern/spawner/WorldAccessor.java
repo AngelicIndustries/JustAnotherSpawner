@@ -1,6 +1,10 @@
 package jas.spawner.modern.spawner;
 
+import jas.spawner.modern.spawner.biome.group.BiomeLookup;
 import jas.spawner.modern.spawner.tags.TagsWorld;
+
+import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.ChunkCoordinates;
@@ -39,12 +43,32 @@ public class WorldAccessor implements TagsWorld {
 		return world.getBiomeGenForCoords(coordX, coordZ);
 	}
 
+	public BiomeGenBase biomeAt(int coordX, int coordY, int coordZ) {
+		return BiomeLookup.biome(world, coordX, coordY, coordZ);
+	}
+
+	public String biomicKeyAt(int coordX, int coordY, int coordZ) {
+		return BiomeLookup.at(world, coordX, coordY, coordZ).biomicKey;
+	}
+
+	public Set<String> biomicTagsAt(int coordX, int coordY, int coordZ) {
+		return BiomeLookup.at(world, coordX, coordY, coordZ).biomicTags;
+	}
+
 	public Block biomeTop(int coordX, int coordZ) {
 		return biomeAt(coordX, coordZ).topBlock;
 	}
 
+	public Block biomeTop(int coordX, int coordY, int coordZ) {
+		return biomeAt(coordX, coordY, coordZ).topBlock;
+	}
+
 	public Block biomeFiller(int coordX, int coordZ) {
 		return biomeAt(coordX, coordZ).fillerBlock;
+	}
+
+	public Block biomeFiller(int coordX, int coordY, int coordZ) {
+		return biomeAt(coordX, coordY, coordZ).fillerBlock;
 	}
 
 	public Material materialAt(int coordX, int coordY, int coordZ) {

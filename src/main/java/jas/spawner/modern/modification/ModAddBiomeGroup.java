@@ -76,7 +76,7 @@ public class ModAddBiomeGroup extends BaseModification {
 			ImportedSpawnList importedSpawnList, BiomeGroupRegistry biomeGroupRegistry,
 			LivingGroupRegistry livingGroupRegistry) {
 		for (String pckgNames : group.getBiomeNames()) {
-			for (Integer biomeID : biomeGroupRegistry.pckgNameToBiomeID().get(pckgNames)) {
+			for (Integer biomeID : biomeGroupRegistry.defaultBiomeIDs(pckgNames)) {
 				Collection<net.minecraft.world.biome.BiomeGenBase.SpawnListEntry> spawnListEntries = importedSpawnList
 						.getSpawnableCreatureList(biomeID);
 				for (String jasName : livingHandler.namedJASSpawnables) {
