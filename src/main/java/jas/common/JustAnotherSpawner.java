@@ -41,7 +41,10 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
-@Mod(modid = DefaultProps.MODID, name = DefaultProps.MODNAME, dependencies = "after:*", useMetadata = true)
+@Mod(modid = DefaultProps.MODID, name = DefaultProps.MODNAME, dependencies = "after:*", useMetadata = true,
+		customProperties = { @Mod.CustomProperty(k = "iconFile", v = "assets/jas/icon.png"),
+				@Mod.CustomProperty(k = "license", v = "Apache-2.0"),
+				@Mod.CustomProperty(k = "issueTrackerUrl", v = "https://github.com/AngelicIndustries/JustAnotherSpawner/issues") })
 public class JustAnotherSpawner {
 
 	@Instance(DefaultProps.MODID)
