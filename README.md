@@ -7,7 +7,7 @@ Adventura Arcana fork
   wrld.biomeAt(x, y, z), wrld.biomicKeyAt(x, y, z) and wrld.biomicTagsAt(x, y, z).
 * Works with EndlessIDs biome IDs; converted max-height tags no longer stop at 256.
 * CosmicDan's spawning events and IS_JAS_SPAWNED tag (off by default, in GlobalProperties).
-* Build with ./gradlew build, or VERSION=<version> ./gradlew build until there is a git tag. Biomic comes from Maven Local.
+* Build with ./gradlew build, or VERSION=<version> ./gradlew build until there is a git tag.
 
 Just Another Spawner (JAS) is a Minecraft Mod that aimed at providing an alternative entity spawning system for Minecraft.
 
