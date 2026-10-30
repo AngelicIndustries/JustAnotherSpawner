@@ -1,1 +1,0 @@
-sh GEN-CHANGELOG.sh

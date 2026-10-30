@@ -17,7 +17,6 @@
  */
 package org.mvel2.optimizers.impl.asm;
 
-import com.sun.org.apache.xpath.internal.compiler.OpCodes;
 import org.mvel2.*;
 import org.mvel2.asm.ClassWriter;
 import org.mvel2.asm.Label;

@@ -1,0 +1,15 @@
+repositories {
+    // Biomic, until its API is published (dependencies.gradle).
+    mavenLocal {
+        content { includeGroup("industries.angelic.biomic") }
+    }
+    maven {
+        name = "Angelic Maven"
+        url = "https://maven.angelic.industries/releases"
+    }
+    maven {
+        name = "JVM Downgrader"
+        url = "https://maven.wagyourtail.xyz/releases"
+        content { includeGroup("xyz.wagyourtail.jvmdowngrader") }
+    }
+}

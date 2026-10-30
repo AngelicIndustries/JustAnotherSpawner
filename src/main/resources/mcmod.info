@@ -1,10 +1,10 @@
 [
 {
-  "modid": "JustAnotherSpawner",
-  "name": "Just Another Spawner",
+  "modid": "${modId}",
+  "name": "${modName}",
   "description": "",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
+  "version": "${modVersion}",
+  "mcversion": "${minecraftVersion}",
   "url": "",
   "updateUrl": "",
   "authors": ["Crudedragos"],
