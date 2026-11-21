@@ -1,8 +1,5 @@
 repositories {
     // Biomic, until its API is published (dependencies.gradle).
-    mavenLocal {
-        content { includeGroup("industries.angelic.biomic") }
-    }
     maven {
         name = "Angelic Maven"
         url = "https://maven.angelic.industries/releases"

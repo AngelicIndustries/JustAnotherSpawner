@@ -1,7 +1,6 @@
 dependencies {
     // Optional Biomic integration, only called from spawner/biome/group/BiomicBiomes when Biomic is installed.
-    // Biomic's API is not published yet: run `VERSION=0.0.1-debloat ./gradlew publishToMavenLocal` in Biomic first.
-    compileOnly("industries.angelic.biomic:Biomic:0.0.1-debloat:dev") { transitive = false }
+    compileOnly("industries.angelic.biomic:Biomic:34682eb-snapshot:dev") { transitive = false }
     // Biomic's Java 8 classes extend JVM Downgrader's record stub, which javac needs to read them.
     compileOnly("xyz.wagyourtail.jvmdowngrader:jvmdowngrader-java-api:1.3.6:downgraded-8") { transitive = false }
 }
